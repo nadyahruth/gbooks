@@ -51,7 +51,7 @@ app.post('/', (req, res) => {
             return data.json()
                 .then((apiData) => {
                     var items = apiData.items;
-                    console.log(items.length) //10
+                    // console.log(items.length) //40
                     var totalItems = apiData.totalItems;
                     var authors = [];
                     var pubDates = []
@@ -72,10 +72,10 @@ app.post('/', (req, res) => {
                 
                     firstPub = pubDates.sort().splice(0, 1)
                     lastestPub = pubDates.sort().splice(pubDates.length - 1)
-                    console.log(firstPub)
-                    console.log(lastestPub)
-                    console.log(count)
-                    console.log(modalCount)
+                    // console.log(firstPub)
+                    // console.log(lastestPub)
+                    // console.log(count)
+                    // console.log(modalCount)
                     if (authors.length == 0)
                         return null;
                     var modeMap = {};
@@ -92,7 +92,7 @@ app.post('/', (req, res) => {
                             maxCount = modeMap[el];
                         }
                     }
-                    console.log( maxEl)
+                    // console.log( maxEl)
 
                    
                     
