@@ -27,12 +27,13 @@
             </div>
         </form>
     </div>
+    <!--Search Detials-->
     <div> Total Results: <%= totalResults %> </div>
     <div id="response">Response Time: <%= resTime %> </div>
     <div> Publications Between : <%= firstPub %> and <%= lastestPub %> </div>
     <div class=""> Most Common Author: <%= commonAuthor %> </div>
     <div class="container-fluid">
-
+        <!--results grid-->
         <div class="row border">
             <% for(var i =0; i <  items.length; i++){ %>
             <div class="col-sm-12 col-md-6 col-lg-4 book-col">
@@ -56,7 +57,8 @@
                     Author(s): <%= items[i].volumeInfo.authors %>
                 </div>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal<%=modalId[i]%>">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modal<%=modalId[i]%>">
                     More
                 </button>
 
@@ -75,12 +77,12 @@
                                 Description: <%= items[i].volumeInfo.description %><br>
                                 <% if (typeof items[i].saleInfo.buyLink == 'undefined'){ %>
 
-                                   <p> Not Available to Purchase</p>
-                    
-                                    <% } else { %>
-                                        <button><a href=" <%= items[i].saleInfo.buyLink %> " alt="">Buy</a></button>
-                                    
-                                    <% } %>
+                                <p> Not Available to Purchase</p>
+
+                                <% } else { %>
+                                <button><a href=" <%= items[i].saleInfo.buyLink %> " alt="">Buy</a></button>
+
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -88,7 +90,25 @@
             </div>
             <%  } %>
         </div>
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                <!--previous page #-->
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <!--active page #-->
+                <li class="page-item active">
+                    <a class="page-link" href="#">2 <span class="sr-only"></span></a>
+                </li>
+                <!--next page #-->
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
 
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous">

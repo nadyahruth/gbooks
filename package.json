@@ -23,6 +23,7 @@
     "node": "^18.4.0",
     "node-fetch": "^3.2.6",
     "nodemon": "^2.0.18",
+    "paginate": "^0.2.0",
     "response-time": "^2.3.2"
   }
 }
