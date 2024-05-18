@@ -93,10 +93,10 @@
         <nav aria-label="...">
             <ul class="pagination">
                 <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                    <a class="page-link" tabindex="-1" onclick="handlePreviousBtn()">Previous</a>
                 </li>
                 <!--previous page #-->
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" onclick="">1</a></li>
                 <!--active page #-->
                 <li class="page-item active">
                     <a class="page-link" href="#">2 <span class="sr-only"></span></a>
@@ -104,9 +104,19 @@
                 <!--next page #-->
                 <li class="page-item"><a class="page-link" href="#">3</a></li>
 
-                <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                </li>
+                <form action="/" method="post">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col">
+                                <li class="page-item">
+                                    <button class="page-link" id="next" type="submit">Next</button>
+                                </li>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
             </ul>
         </nav>
     </div>

@@ -5,7 +5,6 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import responseTime from "response-time";
-import paginate from "paginate";
 
 const app = express();
 app.set("view engine", "ejs");
@@ -24,7 +23,16 @@ app.listen(3000, function () {
 
 var apiUrl;
 let q;
-
+var authors = [];
+var pubDates = [];
+var firstPub;
+var lastestPub;
+var count = 0;
+var modalCount = [];
+var items = [];
+var totalItems;
+var maxEl;
+var maxCount;
 //sending client to landing page
 app.get("/", (req, res) => {
   res.render(__dirname + "/views/app.ejs");
@@ -33,79 +41,73 @@ app.get("/", (req, res) => {
 //info I need from landing page
 app.post("/", (req, res) => {
   q = req.body.search;
-  let endpoint = "https://www.googleapis.com/books/v1/volumes?q=";
   let apiKey = "AIzaSyD5SSDVg9TSEEmGL4qqMw1J7eNecl3ZZw8";
-  let maxResults = 10;
+  let maxResults = 9;
   var page = 1;
   var startIndex = page * maxResults;
-
-  apiUrl =
-    endpoint +
-    q +
-    "&maxResults=" +
-    maxResults +
-    "&startIndex=" +
-    startIndex +
-    "&key=" +
-    apiKey;
+  page++;
+  apiUrl = `https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=${maxResults}&startIndex=${startIndex}&key=${apiKey}`;
   console.log(apiUrl);
   fetchBookData(apiUrl);
 
-  async function fetchBookData(url) {
-    await fetch(url).then((data) => {
-      return data.json().then((apiData) => {
-        var items = apiData.items;
-        // console.log(items.length) //40
-        var totalItems = apiData.totalItems;
-        var authors = [];
-        var pubDates = [];
-        var firstPub;
-        var lastestPub;
-        var count = 0;
-        var modalCount = [];
+  //console.log(fetchBookData(apiUrl));
 
-        for (var i = 0; i < items.length; i++) {
-          var date = items[i].volumeInfo.publishedDate;
-          var author = items[i].volumeInfo.authors;
-          authors.push(author);
-          pubDates.push(date);
-          count++;
-          modalCount.push(count);
-        }
-
-        firstPub = pubDates.sort().splice(0, 1);
-        lastestPub = pubDates.sort().splice(pubDates.length - 1);
-        // console.log(firstPub)
-        // console.log(lastestPub)
-        // console.log(count)
-        // console.log(modalCount)
-        if (authors.length == 0) return null;
-        var modeMap = {};
-        var maxEl = authors[0],
-          maxCount = 1;
-        for (var i = 0; i < authors.length; i++) {
-          var el = authors[i];
-          if (modeMap[el] == null) modeMap[el] = 1;
-          else modeMap[el]++;
-          if (modeMap[el] > maxCount) {
-            maxEl = el;
-            maxCount = modeMap[el];
-          }
-        }
-        // console.log( maxEl)
-
-        res.render(__dirname + "/views/results", {
-          totalResults: totalItems,
-          items: items,
-          resTime: resTime,
-          firstPub: firstPub,
-          lastestPub: lastestPub,
-          commonAuthor: maxEl,
-          modalId: modalCount,
-        });
-        var resTime = res.get("X-Response-Time");
-        console.log(resTime);
-      });
-    });
-  }
+  res.render(__dirname + "/views/results", {
+    totalResults: totalItems,
+    items: items,
+    resTime: resTime,
+    firstPub: firstPub,
+    lastestPub: lastestPub,
+    commonAuthor: maxEl,
+    modalId: modalCount,
+  });
+  var resTime = res.get("X-Response-Time");
+  //console.log(resTime);
 });
+
+async function fetchBookData(url) {
+  await fetch(url).then((data) => {
+    return data.json().then((apiData) => {
+      items = apiData.items;
+      console.log(items.length); //9
+      totalItems = apiData.totalItems;
+      authors = [];
+      pubDates = [];
+      firstPub;
+      lastestPub;
+      count = 0;
+      modalCount = [];
+
+      for (var i = 0; i < items.length; i++) {
+        var date = items[i].volumeInfo.publishedDate;
+        var author = items[i].volumeInfo.authors;
+        authors.push(author);
+        pubDates.push(date);
+        count++;
+        modalCount.push(count);
+      }
+
+      firstPub = pubDates.sort().splice(0, 1);
+      lastestPub = pubDates.sort().splice(pubDates.length - 1);
+      // console.log(firstPub)
+      // console.log(lastestPub)
+      // console.log(count)
+      // console.log(modalCount)
+      if (authors.length == 0) return null;
+      var modeMap = {};
+      (maxEl = authors[0]), (maxCount = 1);
+      for (var i = 0; i < authors.length; i++) {
+        var el = authors[i];
+        if (modeMap[el] == null) modeMap[el] = 1;
+        else modeMap[el]++;
+        if (modeMap[el] > maxCount) {
+          maxEl = el;
+          maxCount = modeMap[el];
+        }
+      }
+      // console.log( maxEl)
+      //var resTime = res.get("X-Response-Time");
+      //console.log(resTime);
+    });
+  });
+}
